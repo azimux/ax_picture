@@ -1,0 +1,9 @@
+<ol>
+  <% if picture_list && picture_list.pictures %>
+    <% picture_list.pictures.each do |picture| %>
+      <li>
+        <%= picture_img_tag_in_table(picture, 100, :caption => true, :include_link => true) -%>
+      </li>
+    <% end %>
+  <% end %>
+</ol>

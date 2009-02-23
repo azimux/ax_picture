@@ -1,0 +1,46 @@
+<% picture_list_entries ||= [] %>
+
+<table>
+  <% picture_list_entries.each do |ple| 
+    picture = ple.picture %>
+    <tr>
+      <td>
+        <%= picture_img_tag_in_table picture, 100 -%>
+      </td>
+      <td>
+        <%= radio_button_tag "move_photo_to_top", ple.id, false -%>  move image to top of list
+      </td>
+      <td>
+        <% boolean_range do %>
+          <%= boolean_radio_tag "photos_to_be_deleted[#{ple.id}]", ple.id, 
+            false, :label=>'delete this photo',:false_submits_nothing => true%>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        caption: <%= text_area_tag "photo_captions[#{ple.id}]", ple.picture.caption, 
+  :cols => 70, :rows => [2, (ple.picture.caption || "").split("\n").size + 1].max -%>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+Upload images<br/>
+<% 3.times do |i| %>
+  <% fields_for "upload_photos" do |pf| %>
+    <%= pf.file_field("file_data", :index => i) %><br/>
+  <% end %>
+<% end %>
+<br/>
+- OR - <br/>
+<br/>
+
+Fetch image from a URL:<br/>
+<% 3.times do |i| %>
+  <% fields_for "upload_photos" do |pf| %>
+    <%= pf.text_field("url", :index => i) %><br/>
+  <% end %>
+<% end %>
+
+
