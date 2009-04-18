@@ -5,7 +5,7 @@ module PicturesHelper
       height = width
     end
 
-    "<div style='width:#{width};height:#{height || width}'>
+    "<div style='width:#{width}px;height:#{height || width}px'>
       #{picture_img_tag(picture,width,height)}
      </div>"
   end
@@ -37,7 +37,7 @@ module PicturesHelper
     #      end
     #    end
 
-    style = "width:#{width};height:#{height || width};margin:0;padding:0;"
+    style = "width:#{width}px;height:#{height || width}px;margin:0;padding:0;"
 
     style += options.delete :style  if options[:style]
 
@@ -143,5 +143,4 @@ module PicturesHelper
       <td>#{radio_button_tag name, options[:false_submits_nothing]? '' : value, !checked}</td>
     </tr>"
   end
-
 end
