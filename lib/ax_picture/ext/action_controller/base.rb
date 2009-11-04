@@ -1,7 +1,3 @@
-require 'open-uri'
-require 'net/http'
-require 'ostruct'
-
 module Azimux
   module Picture
     module ActionController
@@ -74,32 +70,19 @@ module Azimux
           uploaded_photos = params[:upload_photos]
 
           if uploaded_photos
-            fds = {}
+            pics_to_save = []
 
             uploaded_photos.each_pair do |key,value|
               if !key.blank?
                 if !value['url'].blank?
-                  url = value['url']
-                  #fetch the data from a url
-                  response = Net::HTTP.get_response(URI.parse(url))
-                  raise ::BadImageURL if response.code.to_s != '200'
-
-                fd = OpenStruct.new
-                  fd.original_filename = url.split('/').last
-                  fd.content_type = response['Content-type']
-                  fd.size = response.body.size
-                  fd.read = response.body
-                  value['file_data'] = fd
-                end
-
-                if !value['file_data'].blank?
-                  fds[key.to_i] = value['file_data']
+                  pics_to_save << ::Picture.from_url(value['url'])
+                elsif !value['file_data'].blank?
+                  pics_to_save << ::Picture.from_file_data(value['file_data'])
                 end
               end
             end
 
-            fds.keys.sort.each do |key|
-              pic = ::Picture.from_file_data(fds[key])
+            pics_to_save.each do |pic|
               pic.save!
               ple = ::PictureListEntry.new(:picture_id => pic.id)
 
@@ -132,6 +115,7 @@ module Azimux
             end
           end
         end
+
       end
     end
   end

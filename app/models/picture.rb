@@ -1,4 +1,7 @@
 require 'RMagick'
+require 'open-uri'
+require 'net/http'
+require 'ostruct'
 
 class Picture < ActiveRecord::Base
   #after_create :write_data_to_cache
@@ -12,6 +15,18 @@ class Picture < ActiveRecord::Base
     p.file_size = data.size
     p.binary_file = BinaryFile.new(:data => data.read)
     p
+  end
+
+  def self.from_url url
+    response = Net::HTTP.get_response(URI.parse(url))
+    raise ::BadImageURL if response.code.to_s != '200'
+
+    fd = OpenStruct.new
+    fd.original_filename = url.split('/').last
+    fd.content_type = response['Content-type']
+    fd.size = response.body.size
+    fd.read = response.body
+    from_file_data fd
   end
 
   def self.find_by_b64id(b64id)
@@ -109,16 +124,6 @@ class Picture < ActiveRecord::Base
       image.write("#{data_path}/#{binary_file_id.to_b64}") {|ii| ii.format = image.format}
     end
   end
-
-  #  def dup
-  #    retval = nil
-  #    self.class.new do |resource|
-  #      resource.attributes     = @attributes
-  #      retval = resource
-  #    end
-  #
-  #    retval
-  #  end
 
   def == other
     return true if other.id == id
