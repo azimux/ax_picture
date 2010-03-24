@@ -1,8 +1,8 @@
-map.pictures "pictures/:id/:dimensions", 
+map.picture "pictures/:id/:dimensions", 
   :controller => 'pictures',
   :action => 'fetch', 
   :dimensions => nil,
   :requirements => {
-  :b64id => /\d+/,
+  :id => /\d+/,
   :dimensions => /\d+x\d+/
 }
