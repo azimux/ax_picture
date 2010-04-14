@@ -159,7 +159,9 @@ class Picture < ActiveRecord::Base
   end
 
   def self.clear_cache
-    FileUtils.remove_entry_secure(cache_base_path)
+    if File.exists? cache_base_path
+      FileUtils.remove_entry_secure(cache_base_path)
+    end
   end
 
   def wipe_cache_entry
