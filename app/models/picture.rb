@@ -171,4 +171,30 @@ class Picture < ActiveRecord::Base
       end
     end
   end
+
+  def src(width = nil, height = nil)
+    if width.is_a? Hash
+      options = width
+      width = nil
+    end
+
+    if height.is_a? Hash
+      options = height
+      height = width
+    end
+
+    height ||= width
+
+    src = "/pictures/#{id}"
+
+    options ||= {}
+
+    if width
+      size = "#{width}x#{height}"
+      src += "/#{size}"
+    end
+
+    src
+  end
+
 end
