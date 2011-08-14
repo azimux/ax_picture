@@ -8,9 +8,11 @@ class CreatePictureListEntries < ActiveRecord::Migration
 
         t.timestamps
       end
-      
-      add_index :picture_list_entries, :picture_list_id
-      add_index :picture_list_entries, :picture_id
+
+      if !Rails.auto_indexing_enabled?
+        add_index :picture_list_entries, :picture_list_id
+        add_index :picture_list_entries, :picture_id
+      end
     end
   end
 
