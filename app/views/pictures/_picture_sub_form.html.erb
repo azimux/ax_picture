@@ -28,7 +28,7 @@
 
 Upload images<br/>
 <% 3.times do |i| %>
-  <% fields_for "upload_photos" do |pf| %>
+  <%= fields_for "upload_photos" do |pf| %>
     <%= pf.file_field("file_data", :index => i) %><br/>
   <% end %>
 <% end %>
@@ -38,7 +38,7 @@ Upload images<br/>
 
 Fetch image from a URL:<br/>
 <% 3.times do |i| %>
-  <% fields_for "upload_photos" do |pf| %>
+  <%= fields_for "upload_photos" do |pf| %>
     <%= pf.text_field("url", :index => i) %><br/>
   <% end %>
 <% end %>
