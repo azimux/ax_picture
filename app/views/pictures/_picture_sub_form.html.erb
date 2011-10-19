@@ -11,7 +11,7 @@
         <%= radio_button_tag "move_photo_to_top", ple.id, false -%>  move image to top of list
       </td>
       <td>
-        <% boolean_range do %>
+        <%= boolean_range do %>
           <%= boolean_radio_tag "photos_to_be_deleted[#{ple.id}]", ple.id, 
             false, :label=>'delete this photo',:false_submits_nothing => true%>
         <% end %>
