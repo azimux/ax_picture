@@ -112,18 +112,15 @@ module PicturesHelper
     }
   end
 
-
-
-
   def boolean_range &block
-    concat "<table>
+    "<table>
     <tr>
       <td/><td>yes</td><td>no</td>
-    </tr>", block.binding
+    </tr>
 
-    block.call
+    #{with_output_buffer(&block)}
 
-    concat "</table>", block.binding
+    </table>"
   end
 
   def boolean_radio_for f, field, options = {}
