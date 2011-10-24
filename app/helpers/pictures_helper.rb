@@ -118,7 +118,7 @@ module PicturesHelper
       <td/><td>yes</td><td>no</td>
     </tr>
 
-    #{with_output_buffer(&block)}
+    #{capture(&block)}
 
     </table>"
   end
