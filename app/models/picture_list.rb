@@ -9,10 +9,6 @@ class PictureList < ActiveRecord::Base
     retval = super
 
     retval.picture_list_entries = picture_list_entries.map {|ple|ple.clone}
-#    picture_list_entries.each do |ple|
-#      ple = ple.clone
-#      retval.picture_list_entries << ple
-#    end
     
     retval
   end

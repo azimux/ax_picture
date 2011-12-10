@@ -112,32 +112,4 @@ module PicturesHelper
     }
   end
 
-  def boolean_range &block
-    "<table>
-    <tr>
-      <td/><td>yes</td><td>no</td>
-    </tr>
-
-    #{capture(&block)}
-
-    </table>"
-  end
-
-  def boolean_radio_for f, field, options = {}
-    label = options[:label] || field.to_s.humanize
-    "<tr>
-      <td><b>#{label}?</b></td>
-      <td>#{f.radio_button field, true}</td>
-      <td>#{f.radio_button field, false}</td>
-    </tr>"
-  end
-
-  def boolean_radio_tag name, value, checked, options = {}
-    label = options[:label] || name.to_s.humanize
-    "<tr>
-      <td><b>#{label}?</b></td>
-      <td>#{radio_button_tag name, value, checked}</td>
-      <td>#{radio_button_tag name, options[:false_submits_nothing]? '' : value, !checked}</td>
-    </tr>"
-  end
 end

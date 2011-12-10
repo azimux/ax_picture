@@ -89,7 +89,7 @@ class Picture < ActiveRecord::Base
   end
 
   def self.cache_base_path
-    File.join RAILS_ROOT, "bintmp", RAILS_ENV
+    File.join Rails.root, "bintmp", Rails.env
   end
 
   def full_cached_file_path dimensions = nil

@@ -13,11 +13,13 @@ module Azimux
             end
           end
 
-          photos_to_be_deleted = params[:photos_to_be_deleted]
-
-          if photos_to_be_deleted
-            return true unless photos_to_be_deleted.values.grep(/\d+/).empty?
+          photos_to_be_deleted = params[:photos_to_be_deleted].to_a.select do |pair|
+            [true, "true"].include? pair[1]
+          end.map do |pair|
+            pair[0].to_i
           end
+
+          return true unless photos_to_be_deleted.empty?
 
           return true unless params[:move_photo_to_top].blank?
 
@@ -46,13 +48,21 @@ module Azimux
         def process_pictures_for_list pic_list, map_from_list = nil
           ple_map = (map_from_list || pic_list).build_ple_map(pic_list)
 
-          photos_to_be_deleted = params[:photos_to_be_deleted]
-
-          if photos_to_be_deleted
-            photos_to_be_deleted = photos_to_be_deleted.values.grep(/\d+/).map(&:to_i)
-            photos_to_be_deleted.map! {|ple_id| ple_map[ple_id]}
-          else
-            photos_to_be_deleted = []
+          #          photos_to_be_deleted = params[:photos_to_be_deleted]
+          #
+          #          if photos_to_be_deleted
+          #            photos_to_be_deleted = photos_to_be_deleted.values.grep(/\d+/).map(&:to_i)
+          #            photos_to_be_deleted.map! {|ple_id| ple_map[ple_id]}
+          #          else
+          #            photos_to_be_deleted = []
+          #          end
+          #
+          photos_to_be_deleted = (params[:photos_to_be_deleted] || {}).to_a.select do |pair|
+            [true, "true"].include? pair[1]
+          end.map do |pair|
+            pair[0].to_i
+          end.map do |ple_id|
+            ple_map[ple_id]
           end
 
           if !photos_to_be_deleted.empty?

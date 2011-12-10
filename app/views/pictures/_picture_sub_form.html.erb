@@ -12,8 +12,8 @@
       </td>
       <td>
         <%= boolean_range do %>
-          <%= boolean_radio_tag "photos_to_be_deleted[#{ple.id}]", ple.id, 
-            false, :label=>'delete this photo',:false_submits_nothing => true%>
+          <%= boolean_radio_tag "photos_to_be_deleted", ple.id.to_s,
+            false, :label=> 'delete this photo' %>
         <% end %>
       </td>
     </tr>
