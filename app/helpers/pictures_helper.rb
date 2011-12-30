@@ -5,9 +5,11 @@ module PicturesHelper
       height = width
     end
 
-    "<div style='width:#{width}px;height:#{height || width}px'>
-      #{picture_img_tag(picture,width,height)}
-     </div>"
+    content_tag(:div,
+      :style => "width:#{width}px;height:#{height || width}px"
+    ) do
+      picture_img_tag(picture,width,height)
+    end
   end
 
   def picture_img_tag_in_table(picture, width, height = nil, options = {})
@@ -25,30 +27,28 @@ module PicturesHelper
         caption_text = picture.caption
       end
 
-      caption_text = "<caption align='bottom'>#{caption_text}</caption>"
+      caption_text = content_tag(:caption, :align => "bottom") do
+        h(caption_text)
+      end.html_safe
       options.delete :caption
     end
-
-    #    if options[:include_link]
-    #      link_text = if options[:include_link].is_a? String
-    #        options[:include_link]
-    #      else
-    #        "/pictures/#{picture.id}"
-    #      end
-    #    end
 
     style = "width:#{width}px;height:#{height || width}px;margin:0;padding:0;"
 
     style += options.delete :style  if options[:style]
 
-    img_tag = picture_img_tag(picture,width,height, options)
+    img_tag = picture_img_tag(picture, width, height, options)
 
-    #img_tag = link_to(img_tag, link_text) if link_text
-
-    "<table style='#{style}'>
-      #{caption_text}
-      <tr><td>#{img_tag}</tr></td>
-     </table>"
+    content_tag(:table, :style => style) do
+      safe_join([
+          caption_text,
+          content_tag(:tr) do
+            content_tag(:td) do
+              img_tag
+            end
+          end
+        ])
+    end
   end
 
   def picture_img_tag(picture, width = nil, height = nil, options = {})
@@ -78,7 +78,6 @@ module PicturesHelper
         size = "#{width}x#{width}"
       end
       src += "/#{size}"
-      #options[:size] = size
     end
 
     retval = image_tag(src, options)
