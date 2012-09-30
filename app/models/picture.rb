@@ -4,6 +4,9 @@ require 'net/http'
 require 'ostruct'
 
 class Picture < ActiveRecord::Base
+  class BadImageURL < Exception
+  end
+
   #after_create :write_data_to_cache
   after_create :wipe_cache_entry
 
@@ -21,7 +24,7 @@ class Picture < ActiveRecord::Base
 
   def self.from_url url
     response = Net::HTTP.get_response(URI.parse(url))
-    raise ::BadImageURL if response.code.to_s != '200'
+    raise BadImageURL.new(url) if response.code.to_s != '200'
 
     fd = OpenStruct.new
     fd.original_filename = url.split('/').last
