@@ -169,6 +169,7 @@ class Picture < ActiveRecord::Base
 
   def wipe_cache_entry
     Find.find cache_path do |f|
+      f = f.to_s
       if File.file?(f) && File.basename(f).strip == b32id
         FileUtils.rm f
       end
